@@ -1,14 +1,6 @@
 "use client";
 import { useForm } from "react-hook-form";
 
-const Field = ({ label, id, type, register, error }) => (
-  <div>
-    <label htmlFor={id}>{label}</label>
-    <input type={type} id={id} {...register} />
-    {error && <p>{error.message}</p>}
-  </div>
-);
-
 export default function LoginForm() {
   const {
     register,
@@ -44,5 +36,15 @@ export default function LoginForm() {
 
       <input type="submit" value="Log In" />
     </form>
+  );
+}
+
+function Field({ label, id, type, register, error }) {
+  return (
+    <div>
+      <label htmlFor={id}>{label}</label>
+      <input type={type} id={id} {...register} />
+      {error && <p>{error.message}</p>}
+    </div>
   );
 }
