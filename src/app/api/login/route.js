@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import * as bcrypt from "bcrypt";
 
 export async function POST(request) {
+  console.log("asdasd");
   const body = await request.json();
 
   const existingUser = await prisma.user.findFirst({
@@ -11,11 +12,11 @@ export async function POST(request) {
   });
 
   if (!existingUser) {
-    return new Response("", { status: 404 });
+    return null;
   }
 
   if (!(await bcrypt.compare(body.password, existingUser.password))) {
-    return new Response("", { status: 401 });
+    return null;
   }
 
   const { password, ...user } = existingUser;
