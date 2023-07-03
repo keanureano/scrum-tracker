@@ -1,14 +1,5 @@
 ### Register
-POST http://localhost:3000/api/user
-Content-Type: application/json
-
-{
-  "username": "admin",
-  "password": "admin"
-}
-
-### Login
-POST http://localhost:3000/api/login
+POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
 {
