@@ -1,3 +1,4 @@
+import SignOut from "@/components/SignOut";
 import "./globals.css";
 
 export const metadata = {
@@ -8,7 +9,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SignOut />
+        {children}
+      </body>
     </html>
   );
 }
