@@ -11,11 +11,11 @@ export async function POST(request) {
   });
 
   if (!existingUser) {
-    return null;
+    return new Response("", { status: 404 });
   }
 
   if (!(await bcrypt.compare(body.password, existingUser.password))) {
-    return null;
+    return new Response("", { status: 401 });
   }
 
   const { password, ...user } = existingUser;
