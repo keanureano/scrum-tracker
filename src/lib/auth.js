@@ -11,33 +11,29 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        return await verifyUser(credentials);
+        const existingUser = await prisma.user.findFirst({
+          where: {
+            username: credentials.username,
+          },
+        });
+
+        if (!existingUser) {
+          return null;
+        }
+
+        const correctPassword = await bcrypt.compare(
+          credentials.password,
+          existingUser.password
+        );
+
+        if (!correctPassword) {
+          return null;
+        }
+
+        const { password, ...user } = existingUser;
+        return user;
       },
     }),
   ],
+  debug: "true",
 };
-
-async function verifyUser(credentials) {
-  const existingUser = await prisma.user.findFirst({
-    where: {
-      username: credentials.username,
-    },
-  });
-
-  if (!existingUser) {
-    return null;
-  }
-
-  const correctPassword = await bcrypt.compare(
-    credentials.password,
-    existingUser.password
-  );
-
-  if (!correctPassword) {
-    return null;
-  }
-
-  const { password, ...user } = existingUser;
-
-  return user;
-}
