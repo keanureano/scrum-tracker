@@ -1,6 +1,14 @@
 "use client";
 import { useForm } from "react-hook-form";
 
+const Field = ({ label, id, type, register, error }) => (
+  <div>
+    <label htmlFor={id}>{label}</label>
+    <input type={type} id={id} {...register} />
+    {error && <p>{error.message}</p>}
+  </div>
+);
+
 export default function LoginForm() {
   const {
     register,
@@ -14,37 +22,25 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          id="username"
-          {...register("username", {
-            required: "Username is required",
-            minLength: {
-              value: 5,
-              message: "Username must be at least 5 characters long",
-            },
-          })}
-        />
-        {errors.username && <p>{errors.username.message}</p>}
-      </div>
+      <Field
+        label="Username"
+        id="username"
+        type="text"
+        register={register("username", {
+          required: "Username is required",
+        })}
+        error={errors.username}
+      />
 
-      <div>
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          {...register("password", {
-            required: "Password is required",
-            minLength: {
-              value: 5,
-              message: "Password must be at least 5 characters long",
-            },
-          })}
-        />
-        {errors.password && <p>{errors.password.message}</p>}
-      </div>
+      <Field
+        label="Password"
+        id="password"
+        type="password"
+        register={register("password", {
+          required: "Password is required",
+        })}
+        error={errors.password}
+      />
 
       <input type="submit" value="Log In" />
     </form>
