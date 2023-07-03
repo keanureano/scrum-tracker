@@ -1,3 +1,5 @@
+import prisma from "@/lib/prisma";
+import * as bcrypt from "bcrypt";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -10,18 +12,26 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const res = await fetch("/api/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
+        const existingUser = await prisma.user.findFirst({
+          where: {
             username: credentials.username,
-            password: credentials.password,
-          }),
+          },
         });
 
-        const user = await res.json();
+        if (!existingUser) {
+          return null;
+        }
+
+        const correctPassword = await bcrypt.compare(
+          credentials.password,
+          existingUser.password
+        );
+
+        if (!correctPassword) {
+          return null;
+        }
+
+        const { password, ...user } = existingUser;
 
         if (!user) return null;
 
