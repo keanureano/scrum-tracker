@@ -2,8 +2,16 @@
 import { useForm } from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 
-
 export default function HomePage() {
+    return(
+        <>
+        <User user="keanu"/>
+        <User user="aquimio"/>
+        </>
+    )
+}
+
+function User({user}) {
   const {
     register,
     handleSubmit,
@@ -12,7 +20,7 @@ export default function HomePage() {
     setValue,
   } = useForm();
 
-  useFormPersist("storageKey", {
+  useFormPersist(user, {
     watch,
     setValue,
     storage: window.localStorage, // default window.sessionStorage
