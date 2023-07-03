@@ -1,6 +1,5 @@
-import AuthButton from "@/components/AuthButton";
+import SignOut from "@/components/SignOut";
 import "./globals.css";
-import Providers from "@/components/Providers";
 
 export const metadata = {
   title: "",
@@ -11,10 +10,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Providers>
-          <AuthButton />
-          {children}
-        </Providers>
+        <SignOut />
+        {children}
       </body>
     </html>
   );
