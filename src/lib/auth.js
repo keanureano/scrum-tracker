@@ -31,9 +31,17 @@ export const authOptions = {
         }
 
         const { password, ...user } = existingUser;
-        return user;
+
+        return { user };
       },
     }),
   ],
-  debug: "true",
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    async session({ session, user, token }) {
+      return token;
+    },
+  },
 };
