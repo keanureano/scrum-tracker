@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "dotenv-cli": "^7.2.1",
-    "prisma": "^4.16.2"
+    "prisma": "^4.16.2",
+    "react-hook-form": "^7.45.1"
   }
 }
