@@ -1,10 +1,5 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import Navbar from "@/components/Navbar";
+import Profile from "@/components/Profile";
 
-export default async function Home() {
-  const { user } = await getServerSession(authOptions);
-  console.log(user);
-
-  return <main>Welcome,{user.username}<Navbar/></main>;
+export default function Home() {
+  return <main><Profile/></main>;
 }
