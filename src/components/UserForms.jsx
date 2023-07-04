@@ -1,35 +1,7 @@
-"use client";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 
-export default function HomePage() {
-  const userList = [
-    { id: "1", username: "user1", role: "admin" },
-    { id: "2", username: "user2", role: "user" },
-    { id: "3", username: "user3", role: "user" },
-  ];
-
-  const [selectedUser, setSelectedUser] = useState(null);
-
-  const handleUserClick = (user) => {
-    setSelectedUser(user);
-  };
-
-
-  return (
-    <main>
-      {userList.map((user) => (
-        <button key={user.id} onClick={() => handleUserClick(user.username)} className={selectedUser === user ? "selected" : ""}>
-          User: {user.username}
-        </button>
-      ))}
-      {selectedUser && <User user={selectedUser} />}
-    </main>
-  );
-}
-
-function User({ user }) {
+export default function User({ user }) {
   const {
     register,
     handleSubmit,
