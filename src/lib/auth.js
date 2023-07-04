@@ -32,7 +32,7 @@ export const authOptions = {
 
         const { password, ...user } = existingUser;
 
-        return { user };
+        return user;
       },
     }),
   ],
@@ -40,8 +40,9 @@ export const authOptions = {
     async jwt({ token, user }) {
       return { ...token, ...user };
     },
-    async session({ session, user, token }) {
-      return token;
+    async session({ session, token }) {
+      session.user = token;
+      return session;
     },
   },
 };
