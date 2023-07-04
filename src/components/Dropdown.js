@@ -7,10 +7,10 @@ const Dropdown = () => {
   const [selectedOption, setSelectedOption] = useState("");
 
   const options = [
-    { id: 1, label: "Option 1" },
-    { id: 2, label: "Option 2" },
-    { id: 3, label: "Option 3" },
-    { id: 4, label: "Option 4" },
+    { id: 1, label: "Change Email" },
+    { id: 2, label: "Change Password" },
+    { id: 3, label: "Log Out" },
+
   ];
 
   const dropdownRef = useRef(null);
@@ -40,9 +40,9 @@ const Dropdown = () => {
 
   return (
     <div ref={dropdownRef} className="dropdown">
-      <div className="dropdown-toggle" onClick={toggleDropdown}>
+      <button className="dropdown-toggle" onClick={toggleDropdown}>
         {selectedOption || "Select an option"}
-      </div>
+      </button>
       {isOpen && (
         <ul className="dropdown-menu">
           {options.map((option) => (
