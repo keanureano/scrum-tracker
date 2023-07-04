@@ -8,6 +8,9 @@ export default function HomePage() {
     { id: "1", username: "user1", role: "admin" },
     { id: "2", username: "user2", role: "user" },
     { id: "3", username: "user3", role: "user" },
+    { id: "4", username: "user4", role: "admin" },
+    { id: "5", username: "user5", role: "user" },
+    { id: "6", username: "user6", role: "user" },
   ];
 
   const [selectedUser, setSelectedUser] = useState(null);
@@ -19,9 +22,11 @@ export default function HomePage() {
 
   return (
     <main>
+      <div>Users: </div>
       {userList.map((user) => (
-        <button key={user.id} onClick={() => handleUserClick(user.username)} className={selectedUser === user ? "selected" : ""}>
-          User: {user.username}
+        <button key={user.id} onClick={() => handleUserClick(user.username)}
+        className={selectedUser === user.username ? "selected" : ""}>
+          {user.username}
         </button>
       ))}
       {selectedUser && <User user={selectedUser} />}
