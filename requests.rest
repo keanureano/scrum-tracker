@@ -1,13 +1,3 @@
-### Register admin
-POST http://localhost:3000/api/auth/register
-Content-Type: application/json
-
-{
-  "username": "admin",
-  "password": "admin",
-  "role": "admin"
-}
-
 ### Register user
 POST http://localhost:3000/api/auth/register
 Content-Type: application/json
