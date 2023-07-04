@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "migrate": "dotenv -e .env.local -- npx prisma migrate dev",
-    "studio": "dotenv -e .env.local -- npx prisma studio"
+    "studio": "dotenv -e .env.local -- npx prisma studio",
+    "seed": "dotenv -e .env.local -- node prisma/seed.js"
   },
   "dependencies": {
     "@prisma/client": "4.16.2",
