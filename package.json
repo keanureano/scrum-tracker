@@ -3,13 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npm run db:dev && next dev",
+    "build": "npm run db:build && next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "dotenv -e .env.local -- npx prisma migrate dev",
-    "studio": "dotenv -e .env.local -- npx prisma studio",
-    "seed": "dotenv -e .env.local -- node prisma/seed.js"
+    "db:dev": "npm run db:migrate && npm run db:seed",
+    "db:build": "npm run db:deploy && npm run db:seed",
+    "db:deploy": "dotenv -e .env.local -- npx prisma migrate deploy",
+    "db:migrate": "dotenv -e .env.local -- npx prisma migrate dev",
+    "db:seed": "dotenv -e .env.local -- node prisma/seed.js",
+    "db:studio": "dotenv -e .env.local -- npx prisma studio"
   },
   "dependencies": {
     "@prisma/client": "4.16.2",
