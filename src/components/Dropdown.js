@@ -1,33 +1,15 @@
-"use client";
+'use client'
+import React, { useState } from "react";
 
-import React, { useState, useEffect, useRef } from "react";
-
-const Dropdown = () => {
+export default function Dropdown({ user }){
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
-
+  const [newEmail, setNewEmail] = useState("");
   const options = [
-    { id: 1, label: "Change Email" },
-    { id: 2, label: "Change Password" },
-    { id: 3, label: "Log Out" },
-
+    { value: "1", label: "Change Email" },
+    { value: "2", label: "Change Password" },
+    { value: "3", label: "Log Out" },
   ];
-
-  const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, []);
 
   const toggleDropdown = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
@@ -38,22 +20,73 @@ const Dropdown = () => {
     setIsOpen(false);
   };
 
+  const openModal = () => {
+    if (selectedOption === "Change Email") {
+      setIsOpen(false);
+    }
+  };
+
+  const closeModal = () => {
+    setSelectedOption("");
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("New email:", newEmail);
+    setNewEmail("");
+    closeModal();
+
+
+  };
+
   return (
-    <div ref={dropdownRef} className="dropdown">
+    <div className="dropdown">
       <button className="dropdown-toggle" onClick={toggleDropdown}>
-        {selectedOption || "Select an option"}
+        {user}
       </button>
       {isOpen && (
-        <ul className="dropdown-menu">
+        <div className="dropdown-menu">
+          <div className="dropdown-item user-item">{user}</div>
+          <div className="dropdown-divider"></div>
           {options.map((option) => (
-            <li key={option.id} onClick={() => selectOption(option)}>
+            <div
+              key={option.value}
+              className="dropdown-item"
+              onClick={() => selectOption(option)}
+            >
               {option.label}
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
+      )}
+
+      {user && (
+        <div>
+          {selectedOption === "Change Email" && (
+            <div className="modal">
+              <div className="modal-content">
+                <span className="close" onClick={closeModal}>
+                  &times;
+                </span>
+                <h2>Change Email</h2>
+                <form onSubmit={handleSubmit}>
+                  <label>
+                    New Email:
+                    <input
+                      type="email"
+                      value={newEmail}
+                      onChange={(e) => setNewEmail(e.target.value)}
+                      required
+                    />
+                  </label>
+                  <button type="submit">Change Email</button>
+                </form>
+              </div>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
 };
 
-export default Dropdown;

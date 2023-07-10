@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Dropdown from "./Dropdown";
+
 
 
 const Navbar = () => {
@@ -14,8 +14,7 @@ const Navbar = () => {
           Your Logo
         </a>
       </div>
-      <div className="navbar-start">
-        <Dropdown />
+      <div className="navbar-start">  
       </div>
     </nav>
   );
