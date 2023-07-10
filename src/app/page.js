@@ -1,9 +1,9 @@
-import HomePage from "@/components/HomePage";
-import UserData from "@/components/Preview";
+import UserPanel from "@/components/UserPanel";
 
 export default function Home() {
-  return <main>
-    <HomePage/>
-    <UserData/>
-  </main>;
+  return (
+    <main>
+      <UserPanel />
+    </main>
+  );
 }
