@@ -46,23 +46,28 @@ export default function UserPanel() {
 
   return (
     <>
-      <UserNavList userList={userList} setSelectedUser={setSelectedUser} />
+      <UserNavList
+        userList={userList}
+        selectedUser={selectedUser}
+        setSelectedUser={setSelectedUser}
+      />
       <ClearUsersButton onClick={clearLocalUsers} />
       {selectedUser && (
-        <UserForm onChange={getLocalUsers} username={selectedUser} />
+        <UserForm onChange={getLocalUsers} selectedUser={selectedUser} />
       )}
       <PreviewPanel users={users} />
     </>
   );
 }
 
-function UserNavList({ userList, setSelectedUser }) {
+function UserNavList({ userList, selectedUser, setSelectedUser }) {
   return (
     <>
       {userList.map((user) => (
         <button
           key={user.username}
           onClick={() => setSelectedUser(user.username)}
+          disabled={selectedUser === user.username}
         >
           {user.username}
         </button>
@@ -79,17 +84,17 @@ function ClearUsersButton({ onClick }) {
   );
 }
 
-function UserForm({ username, onChange }) {
+function UserForm({ selectedUser, onChange }) {
   const { register, handleSubmit, watch, setValue } = useForm({
     values: {
-      username: username,
+      username: selectedUser,
       today: "",
       yesterday: "",
       impediments: "",
     },
   });
 
-  useFormPersist(`users/${username}`, {
+  useFormPersist(`users/${selectedUser}`, {
     watch,
     setValue,
     storage: window.localStorage,
@@ -97,7 +102,8 @@ function UserForm({ username, onChange }) {
 
   return (
     <form onChange={handleSubmit(onChange)}>
-      <input {...register("username")} />
+      <h1>{selectedUser}</h1>
+      <input type="hidden" {...register("username")} />
       <input {...register("today")} />
       <input {...register("yesterday")} />
       <input {...register("impediments")} />
@@ -108,7 +114,7 @@ function UserForm({ username, onChange }) {
 function PreviewPanel({ users }) {
   return (
     <div>
-      <h2>Users:</h2>
+      <h1>Users</h1>
       {users.length === 0 ? (
         <p>No user found</p>
       ) : (
