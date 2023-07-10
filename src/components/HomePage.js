@@ -3,29 +3,31 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 
-export default function HomePage() {
-  const userList = [
-    { id: "1", username: "user1", role: "admin" },
-    { id: "2", username: "user2", role: "user" },
-    { id: "3", username: "user3", role: "user" },
-    { id: "4", username: "user4", role: "admin" },
-    { id: "5", username: "user5", role: "user" },
-    { id: "6", username: "user6", role: "user" },
-  ];
+const userList = [
+  { id: "1", username: "user1", role: "admin" },
+  { id: "2", username: "user2", role: "user" },
+  { id: "3", username: "user3", role: "user" },
+  { id: "4", username: "user4", role: "admin" },
+  { id: "5", username: "user5", role: "user" },
+  { id: "6", username: "user6", role: "user" },
+];
 
+export default function HomePage() {
   const [selectedUser, setSelectedUser] = useState(null);
 
   const handleUserClick = (user) => {
     setSelectedUser(user);
   };
 
-
   return (
     <main>
       <div>Users: </div>
       {userList.map((user) => (
-        <button key={user.id} onClick={() => handleUserClick(user.username)}
-        className={selectedUser === user.username ? "selected" : ""}>
+        <button
+          key={user.id}
+          onClick={() => handleUserClick(user.username)}
+          className={selectedUser === user.username ? "selected" : ""}
+        >
           {user.username}
         </button>
       ))}
