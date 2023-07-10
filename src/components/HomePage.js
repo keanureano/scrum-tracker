@@ -56,7 +56,7 @@ function User({ user }) {
   };
 
   return (
-    <form onChange={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Field
         label={user}
         id="username"
