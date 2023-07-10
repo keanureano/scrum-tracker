@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import useFormPersist from "react-hook-form-persist";
 
@@ -19,13 +19,15 @@ export default function HomePage() {
     setSelectedUser(user);
   };
 
-
   return (
     <main>
       <div>Users: </div>
       {userList.map((user) => (
-        <button key={user.id} onClick={() => handleUserClick(user.username)}
-        className={selectedUser === user.username ? "selected" : ""}>
+        <button
+          key={user.id}
+          onClick={() => handleUserClick(user.username)}
+          className={selectedUser === user.username ? "selected" : ""}
+        >
           {user.username}
         </button>
       ))}
@@ -55,7 +57,16 @@ function User({ user }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h1>{user}</h1>
+      <Field
+        label={user}
+        id="username"
+        type="hidden"
+        value={user}
+        register={register("username")}
+        error={errors.username}
+       
+      />
+
       <Field
         label="Task Today: "
         id="today"
@@ -93,11 +104,11 @@ function User({ user }) {
   );
 }
 
-function Field({ label, id, type, register, error }) {
+function Field({ label, id, type, register, error, value }) {
   return (
     <div>
       <label htmlFor={id}>{label}</label>
-      <input type={type} id={id} {...register} />
+      <input type={type} id={id} {...register} value={value} />
       {error && <p>{error.message}</p>}
     </div>
   );
