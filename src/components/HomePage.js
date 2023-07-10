@@ -64,6 +64,7 @@ function User({ user }) {
         value={user}
         register={register("username")}
         error={errors.username}
+       
       />
 
       <Field
