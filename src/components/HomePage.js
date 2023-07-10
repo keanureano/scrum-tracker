@@ -45,7 +45,7 @@ function User({ user }) {
     setValue,
   } = useForm();
 
-  useFormPersist(user, {
+  useFormPersist(`user/${user}`, {
     watch,
     setValue,
     storage: window.localStorage, // default window.sessionStorage
