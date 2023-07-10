@@ -1,23 +1,13 @@
-"use client";
-import React, { useState } from "react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import UserDropdown from "./UserDropdown";
 
+export default async function Navbar() {
+  const { username } = await getServerSession(authOptions);
 
-
-const Navbar = () => {
-  const toggleNavbar = () => {
-    setIsOpen(!isOpen);
-  };
   return (
-    <nav className="navbar">
-      <div className="navbar-brand">
-        <a className="navbar-item" href="/">
-          Your Logo
-        </a>
-      </div>
-      <div className="navbar-start">  
-      </div>
+    <nav>
+      <UserDropdown username={username} />
     </nav>
   );
-};
-
-export default Navbar;
+}

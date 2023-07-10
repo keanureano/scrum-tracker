@@ -1,6 +1,5 @@
-import SignOut from "@/components/SignOut";
 import "./globals.css";
-
+import Navbar from "@/components/Navbar";
 
 export const metadata = {
   title: "",
@@ -11,7 +10,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <SignOut />
+        <Navbar />
         {children}
       </body>
     </html>

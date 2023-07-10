@@ -1,7 +1,7 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 
-export default function Dropdown({ user }){
+export default function UserDropdown({ username }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [newEmail, setNewEmail] = useState("");
@@ -35,18 +35,16 @@ export default function Dropdown({ user }){
     console.log("New email:", newEmail);
     setNewEmail("");
     closeModal();
-
-
   };
 
   return (
     <div className="dropdown">
       <button className="dropdown-toggle" onClick={toggleDropdown}>
-        {user}
+        {username}
       </button>
       {isOpen && (
         <div className="dropdown-menu">
-          <div className="dropdown-item user-item">{user}</div>
+          <div className="dropdown-item user-item">{username}</div>
           <div className="dropdown-divider"></div>
           {options.map((option) => (
             <div
@@ -60,7 +58,7 @@ export default function Dropdown({ user }){
         </div>
       )}
 
-      {user && (
+      {username && (
         <div>
           {selectedOption === "Change Email" && (
             <div className="modal">
@@ -88,5 +86,4 @@ export default function Dropdown({ user }){
       )}
     </div>
   );
-};
-
+}
