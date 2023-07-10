@@ -31,12 +31,12 @@ export default function HomePage() {
           {user.username}
         </button>
       ))}
-      {selectedUser && <User user={selectedUser} />}
+      <User user={selectedUser} />
     </main>
   );
 }
 
-function User({ user }) {
+function User({ user = null }) {
   const {
     register,
     handleSubmit,
@@ -48,12 +48,14 @@ function User({ user }) {
   useFormPersist(`user/${user}`, {
     watch,
     setValue,
-    storage: window.localStorage, // default window.sessionStorage
+    storage: window.localStorage,
   });
 
   const onSubmit = (data) => {
     console.log(data);
   };
+
+  if (!user) return null;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -64,7 +66,6 @@ function User({ user }) {
         value={user}
         register={register("username")}
         error={errors.username}
-       
       />
 
       <Field
