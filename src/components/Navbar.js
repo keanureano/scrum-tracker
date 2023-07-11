@@ -3,7 +3,7 @@ import { authOptions } from "@/lib/auth";
 import UserDropdown from "./UserDropdown";
 
 export default async function Navbar() {
-  const user = await getServerSession(authOptions);
+  const { user } = await getServerSession(authOptions);
 
   return (
     <nav>
