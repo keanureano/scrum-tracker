@@ -15,6 +15,7 @@ const userList = [
 export default function UserPanel() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
+  const [issues, setIssues] = useState(null);
 
   const getLocalUsers = () => {
     const localStorageUsers = Object.keys(localStorage)
@@ -27,6 +28,13 @@ export default function UserPanel() {
       .sort((a, b) => a.username.localeCompare(b.username));
 
     setUsers(localStorageUsers);
+  };
+
+  const getLocalIssues = () => {
+    const localStorageIssues = localStorage.getItem("issues");
+    if (!localStorageIssues) return null;
+    const parsedData = JSON.parse(localStorageIssues);
+    setIssues(parsedData.issues);
   };
 
   const clearLocalUsers = () => {
@@ -42,6 +50,8 @@ export default function UserPanel() {
 
   useEffect(() => {
     getLocalUsers();
+    getLocalIssues();
+    console.log(issues)
   }, []);
 
   return (
@@ -51,7 +61,8 @@ export default function UserPanel() {
       {selectedUser && (
         <UserForm onChange={getLocalUsers} username={selectedUser} />
       )}
-      <PreviewPanel users={users} />
+      <IssuesForm onChange={getLocalIssues} />
+      <PreviewPanel users={users} issues={issues} />
     </>
   );
 }
@@ -98,20 +109,45 @@ function UserForm({ username, onChange }) {
   return (
     <form onChange={handleSubmit(onChange)}>
       <input {...register("username")} />
+      <p>Today: </p>
       <input {...register("today")} />
+      <p>Yesterday: </p>
       <input {...register("yesterday")} />
+      <p>Impediments: </p>
       <input {...register("impediments")} />
     </form>
   );
 }
 
-function PreviewPanel({ users }) {
+function IssuesForm({ onChange }) {
+  const { register, handleSubmit, watch, setValue } = useForm({
+    values: {
+      issues: "",
+    },
+  });
+
+  useFormPersist(`issues`, {
+    watch,
+    setValue,
+    storage: window.localStorage,
+  });
+
+  return (
+    <form onChange={handleSubmit(onChange)}>
+      <p>Issues: </p>
+      <input {...register("issues")} />
+    </form>
+  );
+}
+
+function PreviewPanel({ users, issues }) {
   return (
     <div>
       <h2>Users:</h2>
       {users.length === 0 ? (
         <p>No user found</p>
       ) : (
+        <>
         <table>
           <thead>
             <tr>
@@ -119,7 +155,6 @@ function PreviewPanel({ users }) {
               <th>Task Today</th>
               <th>Task Yesterday</th>
               <th>Impediments</th>
-              <th>Issues</th>
             </tr>
           </thead>
           <tbody>
@@ -129,11 +164,13 @@ function PreviewPanel({ users }) {
                 <td>{user.today}</td>
                 <td>{user.yesterday}</td>
                 <td>{user.impediments}</td>
-                <td>{user.issues}</td>
               </tr>
             ))}
           </tbody>
         </table>
+        <h3>Issues: </h3>
+        <p>{issues}</p>
+        </>
       )}
     </div>
   );
