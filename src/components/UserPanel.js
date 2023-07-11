@@ -15,9 +15,9 @@ const userList = [
 export default function UserPanel() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
-  const [issues, setIssues] = useState(null);
+  const [issues, setIssues] = useState("");
 
-  const getLocalUsers = () => {
+  const getLocalState = () => {
     const localStorageUsers = Object.keys(localStorage)
       .filter((key) => key.startsWith("users/"))
       .map((key) => {
@@ -28,30 +28,36 @@ export default function UserPanel() {
       .sort((a, b) => a.username.localeCompare(b.username));
 
     setUsers(localStorageUsers);
+    console.log(localStorageUsers);
+
+    const storedValue = localStorage.getItem("issues");
+    if (storedValue) {
+      const parsedValue = JSON.parse(storedValue); // Parse the value if needed
+      setIssues(parsedValue.issues);
+      console.log(parsedValue);
+    }
   };
 
-  const getLocalIssues = () => {
-    const localStorageIssues = localStorage.getItem("issues");
-    if (!localStorageIssues) return null;
-    const parsedData = JSON.parse(localStorageIssues);
-    setIssues(parsedData.issues);
-  };
-
-  const clearLocalUsers = () => {
+  const clearLocalState = () => {
     Object.keys(localStorage)
       .filter((key) => key.startsWith("users/"))
       .forEach((key) => {
         localStorage.removeItem(key);
       });
 
+    Object.keys(localStorage)
+      .filter((key) => key.startsWith("issues"))
+      .forEach((key) => {
+        localStorage.removeItem(key);
+      });
+
     setUsers([]);
+    setIssues(null);
     setSelectedUser(null);
   };
 
   useEffect(() => {
-    getLocalUsers();
-    getLocalIssues();
-    console.log(issues)
+    getLocalState();
   }, []);
 
   return (
@@ -61,11 +67,11 @@ export default function UserPanel() {
         selectedUser={selectedUser}
         setSelectedUser={setSelectedUser}
       />
-      <ClearUsersButton onClick={clearLocalUsers} />
+      <ClearUsersButton onClick={clearLocalState} />
       {selectedUser && (
-        <UserForm onChange={getLocalUsers} selectedUser={selectedUser} />
+        <UserForm onChange={getLocalState} selectedUser={selectedUser} />
       )}
-      <IssuesForm onChange={getLocalIssues} />
+      <IssuesForm onChange={getLocalState} />
       <PreviewPanel users={users} issues={issues} />
     </>
   );
@@ -115,6 +121,7 @@ function UserForm({ selectedUser, onChange }) {
     <form onChange={handleSubmit(onChange)}>
       <h1>{selectedUser}</h1>
       <input type="hidden" {...register("username")} />
+      <p>Today: </p>
       <input {...register("today")} />
       <p>Yesterday: </p>
       <input {...register("yesterday")} />
@@ -125,11 +132,7 @@ function UserForm({ selectedUser, onChange }) {
 }
 
 function IssuesForm({ onChange }) {
-  const { register, handleSubmit, watch, setValue } = useForm({
-    values: {
-      issues: "",
-    },
-  });
+  const { register, handleSubmit, watch, setValue } = useForm({});
 
   useFormPersist(`issues`, {
     watch,
@@ -153,28 +156,28 @@ function PreviewPanel({ users, issues }) {
         <p>No user found</p>
       ) : (
         <>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Task Today</th>
-              <th>Task Yesterday</th>
-              <th>Impediments</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user, index) => (
-              <tr key={index}>
-                <td>{user.username}</td>
-                <td>{user.today}</td>
-                <td>{user.yesterday}</td>
-                <td>{user.impediments}</td>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Task Today</th>
+                <th>Task Yesterday</th>
+                <th>Impediments</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <h3>Issues: </h3>
-        <p>{issues}</p>
+            </thead>
+            <tbody>
+              {users.map((user, index) => (
+                <tr key={index}>
+                  <td>{user.username}</td>
+                  <td>{user.today}</td>
+                  <td>{user.yesterday}</td>
+                  <td>{user.impediments}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <h3>Issues: </h3>
+          <p>{issues}</p>
         </>
       )}
     </div>
