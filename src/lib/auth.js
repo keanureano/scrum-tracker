@@ -7,9 +7,10 @@ export const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" },
+        username: { label: "Username", type: "text", placeholder: "Enter Username" },
+        password: { label: "Password", type: "password", placeholder: "Enter Password" },
       },
+
       async authorize(credentials, req) {
         const existingUser = await prisma.user.findFirst({
           where: {
@@ -43,5 +44,11 @@ export const authOptions = {
     async session({ session, user, token }) {
       return token;
     },
+  },
+  theme: {
+    colorScheme: "light",
+    brandColor: "#EFAA2D",
+    logo: "/logo.png",
+    buttonText: "",
   },
 };
