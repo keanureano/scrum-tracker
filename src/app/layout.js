@@ -1,6 +1,5 @@
-import SignOut from "@/components/SignOut";
 import "./globals.css";
-import Dropdown from "@/components/Dropdown";
+import Navbar from "@/components/Navbar";
 
 export const metadata = {
   title: "",
@@ -11,8 +10,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Dropdown />
-        <SignOut />
+        <Navbar />
         {children}
       </body>
     </html>
