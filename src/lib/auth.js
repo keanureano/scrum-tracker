@@ -7,10 +7,17 @@ export const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "Enter Username" },
-        password: { label: "Password", type: "password", placeholder: "Enter Password" },
+        username: {
+          label: "Username",
+          type: "text",
+          placeholder: "Enter Username",
+        },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "Enter Password",
+        },
       },
-
       async authorize(credentials, req) {
         const existingUser = await prisma.user.findFirst({
           where: {
