@@ -50,16 +50,15 @@ async function createDummyData(iterations) {
   for (let i = 0; i < iterations; i++) {
     await createDummyUser(i);
   }
-  console.log("✔ Created DUMMY_USERS");
-
+  
   for (let i = 0; i < iterations; i++) {
     await createDummyScrum(i);
 
     for (let j = 0; j < iterations; j++) {
       await createDummyReport(i, j);
     }
+    console.log(`✔ Created DUMMY_SCRUM_${i}`);
   }
-  console.log("✔ Created DUMMY_SCRUMS");
 }
 
 async function createDummyUser(i) {
