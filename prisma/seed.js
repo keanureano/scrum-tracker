@@ -4,10 +4,11 @@ const { faker } = require("@faker-js/faker");
 
 const prisma = new PrismaClient();
 async function main() {
-  await createRootAdminCredentials();
   if (process.env.NODE_ENV === "dev") {
-    await createDummyData(7);
+    await deleteAllData();
+    await createDummyData(5);
   }
+  await createRootCredentials();
 }
 main()
   .then(async () => {
@@ -19,34 +20,50 @@ main()
     process.exit(1);
   });
 
-async function createRootAdminCredentials() {
-  if (!process.env.ROOT_ADMIN_CREDENTIALS) {
-    throw new Error("ROOT_ADMIN_CREDENTIALS .env.local variable is missing.");
-  }
+async function createRootCredentials() {
+  if (!process.env.ROOT_USER_CREDENTIALS || !process.env.ROOT_ADMIN_CREDENTIALS)
+    throw new Error("ROOT CREDENTIALS from .env.local is missing.");
 
-  const [username, unhashedPassword] =
+  const [userUsername, userUnhashedPassword] =
+    process.env.ROOT_USER_CREDENTIALS.split(":");
+
+  const [adminUsername, adminUnhashedPassword] =
     process.env.ROOT_ADMIN_CREDENTIALS.split(":");
 
-  const password = await bcrypt.hash(unhashedPassword, 10);
+  const userPassword = await bcrypt.hash(userUnhashedPassword, 10);
+  const adminPassword = await bcrypt.hash(adminUnhashedPassword, 10);
 
-  await prisma.user.upsert({
-    where: { username },
-    update: {
-      username,
-      password,
-      role: "admin",
-    },
-    create: {
-      username,
-      password,
-      role: "admin",
+  const groupId = "DUMMY_GROUP";
+
+  await prisma.user.create({
+    data: {
+      username: userUsername,
+      password: userPassword,
+      role: "user",
+      group: { connect: { id: groupId } },
     },
   });
 
-  console.log("✔ Created ROOT_ADMIN from .env.local");
+  await prisma.user.create({
+    data: {
+      username: adminUsername,
+      password: adminPassword,
+      role: "admin",
+      group: { connect: { id: groupId } },
+    },
+  });
+
+  console.log("✔ Created ROOT CREDENTIALS");
+}
+
+async function deleteAllData() {
+  await prisma.user.deleteMany();
+  await prisma.scrum.deleteMany();
+  await prisma.report.deleteMany();
 }
 
 async function createDummyData(iterations) {
+  await createDummyGroup();
   for (let i = 0; i < iterations; i++) {
     await createDummyUser(i);
   }
@@ -61,25 +78,29 @@ async function createDummyData(iterations) {
   }
 }
 
+async function createDummyGroup() {
+  await prisma.group.create({
+    data: {
+      id: "DUMMY_GROUP",
+      name: faker.lorem.sentence(),
+    },
+  });
+}
+
 async function createDummyUser(i) {
+  const groupId = "DUMMY_GROUP";
   const id = `DUMMY_USER_${i}`;
-  const username = i === 0 ? "user" : faker.internet.userName();
-  const unhashedPassword = "password";
+  const username = faker.internet.userName();
+  const unhashedPassword = faker.internet.password();
   const password = await bcrypt.hash(unhashedPassword, 10);
 
-  await prisma.user.upsert({
-    where: { id },
-    update: {
+  await prisma.user.create({
+    data: {
       id,
       username,
       password,
       role: "user",
-    },
-    create: {
-      id,
-      username,
-      password,
-      role: "user",
+      group: { connect: { id: groupId } },
     },
   });
 }
@@ -89,14 +110,8 @@ async function createDummyScrum(i) {
   const date = faker.date.past();
   const issues = faker.lorem.sentence();
 
-  await prisma.scrum.upsert({
-    where: { id },
-    update: {
-      id,
-      date,
-      issues,
-    },
-    create: {
+  await prisma.scrum.create({
+    data: {
       id,
       date,
       issues,
@@ -112,17 +127,8 @@ async function createDummyReport(i, j) {
   const taskYesterday = faker.lorem.sentence();
   const impediments = faker.lorem.sentence();
 
-  await prisma.report.upsert({
-    where: { id },
-    create: {
-      id,
-      taskToday,
-      taskYesterday,
-      impediments,
-      user: { connect: { id: userId } },
-      scrum: { connect: { id: scrumId } },
-    },
-    update: {
+  await prisma.report.create({
+    data: {
       id,
       taskToday,
       taskYesterday,
