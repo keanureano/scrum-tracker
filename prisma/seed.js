@@ -60,6 +60,7 @@ async function deleteAllData() {
   await prisma.user.deleteMany();
   await prisma.scrum.deleteMany();
   await prisma.report.deleteMany();
+  await prisma.group.deleteMany();
 }
 
 async function createDummyData(iterations) {
