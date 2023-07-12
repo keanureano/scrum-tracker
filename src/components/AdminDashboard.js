@@ -7,11 +7,12 @@ export default function AdminDashboard({ role }) {
   return (
     <DropdownToggle label="Admin Dashboard">
       <div className="admin-dashboard">
-        <div>View Scrums</div>
-        <div>View Reports</div>
-        <div>View Issues</div>
-        <div>Manage Groups</div>
-        <div>Manage Users</div>
+        <Link href="/admin/view-scrums">View Scrums</Link>
+        <Link href="/admin/view-reports">View Reports</Link>
+        <Link href="/admin/view-issues">View Issues</Link>
+        <Link href="/admin/manage-groups">Manage Groups</Link>
+        <Link href="/admin/manage-users">Manage Users</Link>
+
       </div>
     </DropdownToggle>
   );
