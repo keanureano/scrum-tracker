@@ -7,9 +7,11 @@ import ModalToggle from "./ModalToggle";
 export default function UserDashboard({ username }) {
   return (
     <DropdownToggle label={`Welcome ${username}`}>
-      <ChangeEmailModal />
-      <ChangePasswordModal />
-      <SignOutButton />
+      <div className="user-dashboard">
+        <ChangeEmailModal />
+        <ChangePasswordModal />
+        <SignOutButton />
+      </div>
     </DropdownToggle>
   );
 }
