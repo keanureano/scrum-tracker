@@ -30,8 +30,8 @@ model Report {
   taskToday     String
   taskYesterday String
   impediments   String
-  user          User   @relation(fields: [userId], references: [id])
-  scrum         Scrum  @relation(fields: [scrumId], references: [id])
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scrum         Scrum  @relation(fields: [scrumId], references: [id], onDelete: Cascade)
   userId        String
   scrumId       String
 }
