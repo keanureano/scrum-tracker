@@ -135,46 +135,46 @@ function PreviewPanel({ users, issues }) {
   return (
     <div>
       <h3>Users:</h3>
-      {users.length > 0 && (
-        <>
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Task Today</th>
-                <th>Task Yesterday</th>
-                <th>Impediments</th>
+      {users.length !== 0 && (
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Task Today</th>
+              <th>Task Yesterday</th>
+              <th>Impediments</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user, index) => (
+              <tr key={index}>
+                <td>{user.username}</td>
+                <td>{user.today}</td>
+                <td>{user.yesterday}</td>
+                <td>{user.impediments}</td>
               </tr>
-            </thead>
-            <tbody>
-              {users.map((user, index) => (
-                <tr key={index}>
-                  <td>{user.username}</td>
-                  <td>{user.today}</td>
-                  <td>{user.yesterday}</td>
-                  <td>{user.impediments}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </>
+            ))}
+          </tbody>
+        </table>
       )}
       <h3>Issues: </h3>
-      <p>{issues}</p>
+      {issues && <p>{issues}</p>}
     </div>
   );
 }
 
 function DatabaseButton({ users, issues }) {
   const onSubmit = () => {
-    console.log(users, issues);
+    const data = { reports: users, issues: issues };
+    console.log(data);
   };
   return <button onClick={onSubmit}>Save to Database</button>;
 }
 
 function EmailButton({ users, issues }) {
   const onSubmit = () => {
-    console.log(users, issues);
+    const data = { reports: users, issues: issues };
+    console.log(data);
   };
   return <button onClick={onSubmit}>Email</button>;
 }
