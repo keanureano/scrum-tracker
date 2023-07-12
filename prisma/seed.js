@@ -50,7 +50,7 @@ async function createDummyData(iterations) {
   for (let i = 0; i < iterations; i++) {
     await createDummyUser(i);
   }
-
+  
   for (let i = 0; i < iterations; i++) {
     await createDummyScrum(i);
 
@@ -63,8 +63,8 @@ async function createDummyData(iterations) {
 
 async function createDummyUser(i) {
   const id = `DUMMY_USER_${i}`;
-  const username = i === 0 ? "user" : faker.internet.userName();
-  const unhashedPassword = "password";
+  const username = faker.internet.userName();
+  const unhashedPassword = faker.internet.password();
   const password = await bcrypt.hash(unhashedPassword, 10);
 
   await prisma.user.upsert({
