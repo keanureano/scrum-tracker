@@ -61,7 +61,7 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <main>
       <UserNavList
         userList={userList}
         selectedUser={selectedUser}
@@ -73,7 +73,9 @@ export default function Home() {
       )}
       <IssuesForm onChange={getLocalState} />
       <PreviewPanel users={users} issues={issues} />
-    </>
+      <DatabaseButton users={users} issues={issues} />
+      <EmailButton users={users} issues={issues} />
+    </main>
   );
 }
 
@@ -182,4 +184,18 @@ function PreviewPanel({ users, issues }) {
       )}
     </div>
   );
+}
+
+function DatabaseButton({ users, issues }) {
+  const onSubmit = () => {
+    console.log(users, issues);
+  };
+  return <button onClick={onSubmit}>Save to Database</button>;
+}
+
+function EmailButton({ users, issues }) {
+  const onSubmit = () => {
+    console.log(users, issues);
+  };
+  return <button onClick={onSubmit}>Email</button>;
 }
