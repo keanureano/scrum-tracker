@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
   if (process.env.NODE_ENV === "dev") {
     await deleteAllData();
-    await createDummyData(7);
+    await createDummyData(5);
   }
   await createRootCredentials();
 }
@@ -34,13 +34,11 @@ async function createRootCredentials() {
   const adminPassword = await bcrypt.hash(adminUnhashedPassword, 10);
 
   await prisma.user.create({
-    username: userUsername,
-    password: userPassword,
-    role: "user",
+    data: { username: userUsername, password: userPassword, role: "user" },
   });
 
   await prisma.user.create({
-    create: {
+    data: {
       username: adminUsername,
       password: adminPassword,
       role: "admin",
