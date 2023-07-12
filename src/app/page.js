@@ -62,6 +62,7 @@ export default function Home() {
 
   return (
     <main>
+      <h1>Home</h1>
       <UserNavList
         userList={userList}
         selectedUser={selectedUser}
@@ -153,7 +154,7 @@ function IssuesForm({ onChange }) {
 function PreviewPanel({ users, issues }) {
   return (
     <div>
-      <h1>Users</h1>
+      <h3>Users</h3>
       {users.length === 0 ? (
         <p>No user found</p>
       ) : (
@@ -178,10 +179,10 @@ function PreviewPanel({ users, issues }) {
               ))}
             </tbody>
           </table>
-          <h3>Issues: </h3>
-          <p>{issues}</p>
         </>
       )}
+      <h3>Issues: </h3>
+      <p>{issues}</p>
     </div>
   );
 }
