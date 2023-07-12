@@ -10,11 +10,13 @@ export default async function Navbar() {
 
   return (
     <nav className="navbar">
-      <Image src="/logo.png" width={166} height={50} alt="logo" />
+      <Link href="/">
+        <Image src="/logo.png" width={166} height={50} alt="logo" />
+      </Link>
       <div className="links">
-        <Link href="#">Home</Link>
-        <Link href="#">My Reports</Link>
-        <Link href="#">Weekly Scrums</Link>
+        <Link href="/">Home</Link>
+        <Link href="/my-reports">My Reports</Link>
+        <Link href="/weekly-scrum">Weekly Scrum</Link>
       </div>
       <div className="dashboards">
         <AdminDashboard role={user.role} />
