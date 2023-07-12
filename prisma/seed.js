@@ -33,8 +33,15 @@ async function createRootCredentials() {
   const userPassword = await bcrypt.hash(userUnhashedPassword, 10);
   const adminPassword = await bcrypt.hash(adminUnhashedPassword, 10);
 
+  const groupId = "DUMMY_GROUP";
+
   await prisma.user.create({
-    data: { username: userUsername, password: userPassword, role: "user" },
+    data: {
+      username: userUsername,
+      password: userPassword,
+      role: "user",
+      group: { connect: { id: groupId } },
+    },
   });
 
   await prisma.user.create({
@@ -42,6 +49,7 @@ async function createRootCredentials() {
       username: adminUsername,
       password: adminPassword,
       role: "admin",
+      group: { connect: { id: groupId } },
     },
   });
 
@@ -55,6 +63,7 @@ async function deleteAllData() {
 }
 
 async function createDummyData(iterations) {
+  await createDummyGroup();
   for (let i = 0; i < iterations; i++) {
     await createDummyUser(i);
   }
@@ -69,7 +78,17 @@ async function createDummyData(iterations) {
   }
 }
 
+async function createDummyGroup() {
+  await prisma.group.create({
+    data: {
+      id: "DUMMY_GROUP",
+      name: faker.lorem.sentence(),
+    },
+  });
+}
+
 async function createDummyUser(i) {
+  const groupId = "DUMMY_GROUP";
   const id = `DUMMY_USER_${i}`;
   const username = faker.internet.userName();
   const unhashedPassword = faker.internet.password();
@@ -81,6 +100,7 @@ async function createDummyUser(i) {
       username,
       password,
       role: "user",
+      group: { connect: { id: groupId } },
     },
   });
 }
