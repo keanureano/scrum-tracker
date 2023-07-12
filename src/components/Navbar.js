@@ -15,8 +15,8 @@ export default async function Navbar() {
       </Link>
       <div className="links">
         <Link href="/">Home</Link>
-        <Link href="/my-reports">My Reports</Link>
-        <Link href="/weekly-scrum">Weekly Scrum</Link>
+        <Link href="/user/my-reports">My Reports</Link>
+        <Link href="/user/weekly-scrum">Weekly Scrum</Link>
       </div>
       <div className="dashboards">
         <AdminDashboard role={user.role} />
