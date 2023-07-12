@@ -20,39 +20,21 @@ export default function Home() {
   const getLocalState = () => {
     const localStorageUsers = Object.keys(localStorage)
       .filter((key) => key.startsWith("users/"))
-      .map((key) => {
-        const localStorageData = localStorage.getItem(key);
-        if (!localStorageData) return null;
-        return JSON.parse(localStorageData);
-      })
+      .map((key) => JSON.parse(localStorage.getItem(key)))
       .sort((a, b) => a.username.localeCompare(b.username));
 
     setUsers(localStorageUsers);
-    console.log(localStorageUsers);
 
-    const storedValue = localStorage.getItem("issues");
-    if (storedValue) {
-      const parsedValue = JSON.parse(storedValue); // Parse the value if needed
-      setIssues(parsedValue.issues);
-      console.log(parsedValue);
-    }
+    const storedIssues = localStorage.getItem("issues");
+    setIssues(storedIssues ? JSON.parse(storedIssues).issues : "");
   };
 
-  const clearLocalState = () => {
+  const clearUser = () => {
     Object.keys(localStorage)
-      .filter((key) => key.startsWith("users/"))
-      .forEach((key) => {
-        localStorage.removeItem(key);
-      });
+      .filter((key) => key.startsWith(`users/${selectedUser}`))
+      .forEach((key) => localStorage.removeItem(key));
 
-    Object.keys(localStorage)
-      .filter((key) => key.startsWith("issues"))
-      .forEach((key) => {
-        localStorage.removeItem(key);
-      });
-
-    setUsers([]);
-    setIssues(null);
+    getLocalState();
     setSelectedUser(null);
   };
 
@@ -68,9 +50,12 @@ export default function Home() {
         selectedUser={selectedUser}
         setSelectedUser={setSelectedUser}
       />
-      <ClearUsersButton onClick={clearLocalState} />
       {selectedUser && (
-        <UserForm onChange={getLocalState} selectedUser={selectedUser} />
+        <UserForm
+          onChange={getLocalState}
+          clearUser={clearUser}
+          selectedUser={selectedUser}
+        />
       )}
       <IssuesForm onChange={getLocalState} />
       <PreviewPanel users={users} issues={issues} />
@@ -96,15 +81,7 @@ function UserNavList({ userList, selectedUser, setSelectedUser }) {
   );
 }
 
-function ClearUsersButton({ onClick }) {
-  return (
-    <div>
-      <button onClick={onClick}>Clear All User Inputs</button>
-    </div>
-  );
-}
-
-function UserForm({ selectedUser, onChange }) {
+function UserForm({ selectedUser, onChange, clearUser }) {
   const { register, handleSubmit, watch, setValue } = useForm({
     values: {
       username: selectedUser,
@@ -122,7 +99,10 @@ function UserForm({ selectedUser, onChange }) {
 
   return (
     <form onChange={handleSubmit(onChange)}>
-      <h1>{selectedUser}</h1>
+      <h2>{selectedUser}</h2>
+      <button type="button" onClick={clearUser}>
+        Clear
+      </button>
       <input type="hidden" {...register("username")} />
       <p>Today: </p>
       <input {...register("today")} />
@@ -154,10 +134,8 @@ function IssuesForm({ onChange }) {
 function PreviewPanel({ users, issues }) {
   return (
     <div>
-      <h3>Users</h3>
-      {users.length === 0 ? (
-        <p>No user found</p>
-      ) : (
+      <h3>Users:</h3>
+      {users.length > 0 && (
         <>
           <table>
             <thead>
