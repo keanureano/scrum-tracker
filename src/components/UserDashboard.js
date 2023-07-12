@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import DropdownToggle from "./DropdownToggle";
 import ModalToggle from "./ModalToggle";
+import { signOut } from "next-auth/react";
 
 export default function UserDashboard({ username }) {
   return (
@@ -108,9 +109,5 @@ function ChangePasswordModal() {
 }
 
 function SignOutButton() {
-  return (
-    <form action="/api/auth/signout">
-      <input type="submit" value="Sign Out" />
-    </form>
-  );
+  return <button onClick={() => signOut()}>Sign Out</button>;
 }
