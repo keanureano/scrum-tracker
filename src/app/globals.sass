@@ -1,0 +1,42 @@
+@mixin gap-x($spacing)
+  > *
+    margin-right: $spacing
+    &:last-child
+      margin-right: 0
+
+@mixin gap-y($spacing)
+  > *
+    margin-bottom: $spacing
+    &:last-child
+      margin-bottom: 0
+
+.dropdown
+  position: absolute
+  z-index: 1000
+
+.modal
+  position: fixed
+  z-index: 1000
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+
+.navbar
+  display: flex
+  align-items: center
+  justify-content: gap-between
+  @include gap-x(4rem)
+
+  .links
+    flex-grow: 1
+    @include gap-x(2rem)
+
+  .dashboards
+    display: flex
+    @include gap-x(2rem)
+
+    .admin-dashboard,
+    .user-dashboard
+      display: flex
+      flex-direction: column
+      @include gap-y(1rem)

@@ -30,6 +30,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
     "dotenv-cli": "^7.2.1",
-    "prisma": "^4.16.2"
+    "prisma": "^4.16.2",
+    "sass": "^1.63.6"
   }
 }

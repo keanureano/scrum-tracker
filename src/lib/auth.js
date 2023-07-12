@@ -56,7 +56,7 @@ export const authOptions = {
   theme: {
     colorScheme: "light",
     brandColor: "#EFAA2D",
-    logo: "/logo.png",
+    logo: "",
     buttonText: "",
   },
 };
